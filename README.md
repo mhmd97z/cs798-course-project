@@ -72,7 +72,9 @@ RAN simulator is not enabled in the sd-ran chart by default. You can enable it w
 - ``kubectl -n micro-onos get pods``: get pods on the micro-onos namesapce
 - ``kubectl -n kube-system get pods``: get pods on the kube-system namesapce
 - ``kubectl get namespace``: get kubernetes namespaces
-- ``kubectl get nodes``: get nodes
+- ``kubectl get nodes``: gues what?! 
+- ``kubectl get all``: guess what?! 
+- ``kubectl get svc``: get 
 - ``kubectl describe nodes my-node``: get the detail of a node
 - ``kubectl describe pods my-pod``: get the detail of a pod
 
@@ -123,3 +125,5 @@ The E2 nodes can be defined statically in the simulation model from the RAN simu
   - **Metrics API**: provides means to create, delete, and read metrics for the specified entity ( e.g. A node, a cell, or a UE)
   - **Traffic Sim API**: provides means to create, list, and monitor UEs.
   - 
+
+
