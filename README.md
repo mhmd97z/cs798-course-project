@@ -3,6 +3,13 @@
 ## ToDo List
 - [x] Deploying uONOS and SD-RAN Simulator! 
 - [ ] Simulating a RAN instance: a few BSs and UEs, etc.
+- [ ] Investigating uONOS components: 
+  - [ ] onos-kpimon [gathering metrics]
+  - [ ] onos-mho [responsible for mobile handover]
+  - [ ] onos-rsm [RAN slicing management]
+- [ ] Investigating Honeycomb Topology Generator options in modelling RAN
+- [ ] Investigating RAN simulator gRPC APIs and onos cli
+- [ ] 
 
 ## uONOS 
 
@@ -31,7 +38,7 @@ Currently, all E2SMs and xApps supported by ONOS RIC are implemented in GO, howe
 - RC: [RAN Control] This service model allows RIC to gather cells (PCI) and neighbor relationship.
   - SD-RAN project provides the **onos-pci** xApp to demonstrate this service model. This xApp provides access to PCI resources through **onos-cli** command-line interface. It allows the collection of data related to PCI and PCI conflicts. This xApp is also capable of detecting and resolving PCI conflicts using built-in algorithms.
 - MHO: [Mobile Handover] This service model handles all mobile handover procedure-related operations. This service model allows collection of signal metric data for UEs and RRC state change data. It also allows control signalling for initiating mobile handover procedures.
-  - The **onos-mho** xApp runs over this service model and serves as a sample use case for this service model
+  - The **onos-mho** xApp runs over this service model and serves as a sample use case for this service model.
 - RSM: [RAN Slicing Management] This service model allows creating, updating and deleting RAN slices
   - SD-RAN project provides a simple xApp **onos-rsm** that runs over this service model. This app allows creating, updating and deleting RAN slices through a command-line interface. User is also capable of specifying a UE to a slice through the command line. This xApp would also store and update the topology and UE properties related to RAN slicing operations using **onos-topo** and **onos-uenib** accordingly.
 
@@ -100,3 +107,19 @@ At first, onos cli is not readily accessible. You can either setup it from [here
 ### Useful links!
 - [General Instructions](https://docs.onosproject.org/onos-cli/docs/cli/onos/) 
 - 
+
+## SD-RAN Simulator
+With the help of [Honeycomb Topology Generator](https://github.com/onosproject/ran-simulator/blob/master/docs/topology_generator.md), you can define models on which SD-RAN simulator builds its simulation network. There are a few models available [here](https://github.com/onosproject/sdran-helm-charts/tree/master/ran-simulator/files/model). 
+
+### Honeycomb Topology Generator
+The RAN simulator comes with an accompanying utility that generates a RAN topology YAML file that is ready to be loaded by the RAN simulator. This utility generates a hexagonal grid of RAN towers (E2 Nodes), each with a prescribed number of cells with equal arc of coverage. The following is the command-line usage:
+
+### How to work with that!
+The E2 nodes can be defined statically in the simulation model from the RAN simulator helm chart or can be added/removed at runtime using [RAN simulator APIs](https://github.com/onosproject/onos-api/). Additionally, there's a specific [cli](https://github.com/onosproject/onos-cli/blob/master/docs/cli/onos_ransim.md) for that in onos-cli! 
+- Simulation model
+  - Using honeycomb
+- RAN simulator gRPC APIs
+  - **Model API**: provides means to create, delete and read RAN simulation model such as E2 nodes and cells.
+  - **Metrics API**: provides means to create, delete, and read metrics for the specified entity ( e.g. A node, a cell, or a UE)
+  - **Traffic Sim API**: provides means to create, list, and monitor UEs.
+  - 
