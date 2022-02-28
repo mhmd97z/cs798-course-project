@@ -11,6 +11,7 @@
 - [ ] Investigating RAN simulator gRPC APIs and onos cli
 - [ ] 
 
+
 ## Steps to Deploy SD-RAN Components using Kubernetes
 - Setting up Kubernetes
   - Insalling utilities on the master and worker nodes using this [link](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)
@@ -34,6 +35,7 @@
 RAN simulator is not enabled in the sd-ran chart by default. You can enable it when you deploy sd-ran helm chart using the following command
 ``helm install sd-ran sd-ran -n sd-ran --set import.ran-simulator.enabled=true``
 
+
 ### Useful Kub commands
 - ``kubeadm version --output=short``: get the kubeadm version
 - ``kubectl label node oran-worker node-role.kubernetes.io/worker=worker``: add worker label 
@@ -47,6 +49,7 @@ RAN simulator is not enabled in the sd-ran chart by default. You can enable it w
 - ``kubectl describe pods my-pod``: get the detail of a pod
 - ``docker exec -it -u root <Container_ID> /bin/bash``: to get root access to the docker, run this command on the corresponding node
 - ``kubectl delete --all pods --namespace=foo``
+
 
 ### Deployed pods
 
@@ -73,16 +76,29 @@ onos-uenib-645fbc8574-4hjj4      3/3     Running   0          98m
 ran-simulator-6c9697b594-mrgg8   1/1     Running   0          57m
 ```
 
-## Working with SD-RAN APIs
-At first, onos cli is not readily accessible. You can either setup it from [here](https://docs.onosproject.org/onos-cli/docs/setup/), or run your commands using ``kubectl exec`` with this [instructions](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#exec). Like: 
+## Working with SD-RAN
+- Getting access to the **onos-cli**:
+
+You can either setup it from [here](https://docs.onosproject.org/onos-cli/docs/setup/),
+``` Bash
+kubectl -n micro-onos exec -it $(kubectl -n micro-onos get pods -l type=cli -o name) -- /bin/sh
+```
+
+OR run your commands using ``kubectl exec`` with this [instruction](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#exec). Like: 
 
 ``` Bash
 clipod=$(kubectl -n sd-ran get pods | grep onos-cli | cut -d\  -f1)
 kubectl -n sd-ran exec --stdin $clipod -- /usr/local/bin/onos ransim get nodes
 ```
+- Working with ``onos-kpimon``
+```
+onos kpimon list metrics
+```
+
+
+
+
 
 ### Useful links!
 - [General Instructions](https://docs.onosproject.org/onos-cli/docs/cli/onos/) 
 - [SD-RAN Documentation](https://docs.sd-ran.org/master/index.html)
-
-
