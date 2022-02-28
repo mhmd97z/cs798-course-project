@@ -11,42 +11,10 @@
 - [ ] Investigating RAN simulator gRPC APIs and onos cli
 - [ ] 
 
-## uONOS 
-
-### Basics
-- ONOS RIC consists of multiple micro-services, each is deployed as a Kubernetes pod, and communication between micro-services are mainly done through gRPC.
-- The majority of the micro-services are implemented in GO, with the E2 interface decoding and encoding implemented in C.
-
-### Architecture
-- **onos-e2t**
-  - **onos-e2t** micro-service is the one that actually connects E2 nodes with xApps. This micro-service terminates E2 interfaces, manages subscriptions, and hosts xApps.
-  - In the implementation of ONOS RIC, communication between **onos-e2t** and xApps are done through Protobuf messages, instead of E2 messages (which are in ASN.1 syntax).
-  - **onos-e2t** micro-service is also responsible for maintaining topology of all E2 nodes connected and storing a list of RAN functions supported by each E2 node using information gathered from setup stage and service update requests. This micro-service stores information using APIs exposed by **onos-topo** and **onos-uenib**.
-- **onos-topo**
-  - ONOS RIC uses **onos-topo** as a R-NIB storage. Specifically, information regarding E2 nodes and their relationship, information regarding cells and slicing are stored using **onos-topo** to manage and provide a shared view of the overall RAN system.
-- **onos-uenib**
-  - UE-related information is stored using APIs provided by **onos-uenib**, a new micro-service designed specifically to store and track UE information with minimum latency and high throughput rate.
-- **onos-e2-sm**
-  - Service models are implemented in **onos-e2-sm**. It is a shared library that contains all supported service models and mapping between the ASN.1 definition (for E2 messages) and protobuf definition (for xApps) of the service models. By using a separate library, ONOS RIC decouples service model with the remaining system, making ONOS RIC capable of handling any E2SM.
-
-### Supported Service Model and xApps
-Currently, all E2SMs and xApps supported by ONOS RIC are implemented in GO, however, a Python SDK is now in the beta stage and we could see xApps implemented in Python coming in the future. 
-- KPM: allows gathering metric data from E2 nodes
-  - **onos-kpimon** xApp is provided as a sample xApp that runs over this service model to collect metric data. The collected data can be retrieved through **onos-cli** command-line interface.
-- NI: currently, only the protobuf definition of this service model has been implemented
-  - No xApps that run over this service model is provided by SD-RAN project.
-- RC: [RAN Control] This service model allows RIC to gather cells (PCI) and neighbor relationship.
-  - SD-RAN project provides the **onos-pci** xApp to demonstrate this service model. This xApp provides access to PCI resources through **onos-cli** command-line interface. It allows the collection of data related to PCI and PCI conflicts. This xApp is also capable of detecting and resolving PCI conflicts using built-in algorithms.
-- MHO: [Mobile Handover] This service model handles all mobile handover procedure-related operations. This service model allows collection of signal metric data for UEs and RRC state change data. It also allows control signalling for initiating mobile handover procedures.
-  - The **onos-mho** xApp runs over this service model and serves as a sample use case for this service model.
-- RSM: [RAN Slicing Management] This service model allows creating, updating and deleting RAN slices
-  - SD-RAN project provides a simple xApp **onos-rsm** that runs over this service model. This app allows creating, updating and deleting RAN slices through a command-line interface. User is also capable of specifying a UE to a slice through the command line. This xApp would also store and update the topology and UE properties related to RAN slicing operations using **onos-topo** and **onos-uenib** accordingly.
-
-
 ## Steps to Deploy SD-RAN Components using Kubernetes
 - Setting up Kubernetes
   - Insalling utilities on the master and worker nodes using this [link](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)
-  - Setting up the cluster on the master node using this [link](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)
+  - Setting up the cluster using this [link](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)
     - ``kubeadm init --apiserver-advertise-address=<MASTER IP ADDR>``
     - this will give you a token that worker nodes need to use for authentication
     - Just need to run this on the worker nodes:``kubeadm join 10.10.0.213:6443 --token 1ms8en.e7odz1p9wk6xupb1	--discovery-token-ca-cert-hash sha256:051d68ecbe193de503614fc6402c872daabc1cd1131dcdd7496349f7036972dc``
@@ -77,6 +45,8 @@ RAN simulator is not enabled in the sd-ran chart by default. You can enable it w
 - ``kubectl get svc``: get 
 - ``kubectl describe nodes my-node``: get the detail of a node
 - ``kubectl describe pods my-pod``: get the detail of a pod
+- ``docker exec -it -u root <Container_ID> /bin/bash``: to get root access to the docker, run this command on the corresponding node
+- ``kubectl delete --all pods --namespace=foo``
 
 ### Deployed pods
 
@@ -104,26 +74,15 @@ ran-simulator-6c9697b594-mrgg8   1/1     Running   0          57m
 ```
 
 ## Working with SD-RAN APIs
-At first, onos cli is not readily accessible. You can either setup it from [here](https://docs.onosproject.org/onos-cli/docs/setup/), or run your commands using ``kubectl exec`` with this [instructions](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#exec) 
+At first, onos cli is not readily accessible. You can either setup it from [here](https://docs.onosproject.org/onos-cli/docs/setup/), or run your commands using ``kubectl exec`` with this [instructions](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#exec). Like: 
+
+``` Bash
+clipod=$(kubectl -n sd-ran get pods | grep onos-cli | cut -d\  -f1)
+kubectl -n sd-ran exec --stdin $clipod -- /usr/local/bin/onos ransim get nodes
+```
 
 ### Useful links!
 - [General Instructions](https://docs.onosproject.org/onos-cli/docs/cli/onos/) 
-- 
-
-## SD-RAN Simulator
-With the help of [Honeycomb Topology Generator](https://github.com/onosproject/ran-simulator/blob/master/docs/topology_generator.md), you can define models on which SD-RAN simulator builds its simulation network. There are a few models available [here](https://github.com/onosproject/sdran-helm-charts/tree/master/ran-simulator/files/model). 
-
-### Honeycomb Topology Generator
-The RAN simulator comes with an accompanying utility that generates a RAN topology YAML file that is ready to be loaded by the RAN simulator. This utility generates a hexagonal grid of RAN towers (E2 Nodes), each with a prescribed number of cells with equal arc of coverage. The following is the command-line usage:
-
-### How to work with that!
-The E2 nodes can be defined statically in the simulation model from the RAN simulator helm chart or can be added/removed at runtime using [RAN simulator APIs](https://github.com/onosproject/onos-api/). Additionally, there's a specific [cli](https://github.com/onosproject/onos-cli/blob/master/docs/cli/onos_ransim.md) for that in onos-cli! 
-- Simulation model
-  - Using honeycomb
-- RAN simulator gRPC APIs
-  - **Model API**: provides means to create, delete and read RAN simulation model such as E2 nodes and cells.
-  - **Metrics API**: provides means to create, delete, and read metrics for the specified entity ( e.g. A node, a cell, or a UE)
-  - **Traffic Sim API**: provides means to create, list, and monitor UEs.
-  - 
+- [SD-RAN Documentation](https://docs.sd-ran.org/master/index.html)
 
 
