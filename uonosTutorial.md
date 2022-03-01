@@ -79,3 +79,51 @@ Currently, all E2SMs and xApps supported by ONOS RIC are implemented in GO, howe
 - An Aspect is a collection of structured information, modeled as a Protobuf message (although this is not strictly necessary), which is attached to the UE. In fact, UE entity carries only its unique identifier, and the rest of the information is expressed via aspects, which are tracked as a map of aspect type (TypeURL) and Protobuf Any message bindings.
 - For example, to track UE cell connectivity, the system uses the CellInfo aspect defined as a CellConnection for the serving cell and the list of candidate cells
 - [API Examples for Golang](https://docs.sd-ran.org/master/onos-uenib/docs/api-go.html)
+
+### onos-topo
+- [docLink](https://docs.sd-ran.org/master/onos-topo/README.html) | [gitRepo](https://github.com/onosproject/onos-topo) | [dockerImage] (https://hub.docker.com/r/onosproject/onos-topo)
+- The µONOS Topology subsystem provides topology management for µONOS core services and applications. 
+The topology subsystem structures the topology information as a set of objects, which can be either Entity, Relation or a Kind.
+  - **Entity** objects are nodes in a graph and are generally intended to represent network devices, control entities, control domains, and so on.
+  - **Relation** objects are edges in a graph and are intended to represent various types of relations between two Entity objects, e.g. contains, controls, implements.
+  - **Kind** objects can be thought of as template or schema objects that represent an entity or a relation kind. Strictly speaking, Entity or Relation instances do not have to be associated with a Kind, but maintaining Kind associations can be used for schema validation and speeding up queries and is therefore highly encouraged.
+- Each Entity, Relation and Kind objects has a unique identifier that can be used to directly look it up, update or delete it.
+- The Entity and Relation objects themselves carry only the essential information for 
+  - identifying them
+  - associating them with a particular kind
+  - in case of Relation, for associating the two Entity objects
+- This is not sufficient to allow the platform or applications to track other pertinent information about the entities and relations. Since different use-cases or applications require tracking different information, and these may vary for different types of devices or network domains, the topology schema must be extensible to carry various aspects of information
+  - This is where the notion of Aspect comes in
+  - An Aspect is a collection of structured information, modeled as a Protobuf message (although this is not strictly necessary), which is attached to any type of object; generally mostly an Entity or a Relation.
+  - Each object carries a mapping of aspect type (TypeURL) and Protobuf Any message
+  - For example, to track a geo-location of a network element, one can associate **onos.topo.Location** instance, populated with the appropriate longitude and latitude with the Entity that represents that network element.
+  - Similarly, to track information about the cone of signal coverage for a radio-unit, one can attach onos.topo.Coverage instance to an Entity representing the radio unit.
+- To assist in categorization of the topology objects, each object can carry a number of labels as meta-data. Each label carries a value.
+  - For example the deployment label can have production or staging or testing as values. 
+  - Or similarly, tier label can have access, fabric or backhaul as values to indicate the area of network where the entity belongs.
+- The topology API provides a **List** method to obtain a collection of objects. The caller can specify a number of different filters to narrow the results. All topology objects will be returned if the request does not contain any filters.
+  - Type Filter: specifies which type(s) of objects should be included, e.g. Entity, Relation or Kind 
+  - Kind Filter: specifies which kind(s) of objects should be included, e.g. contains, controls
+  - Labels Filter: specifies which label name/value(s) should be included, e.g. tier=fabric
+  - Relation Filter: specifies target entities related to a given source entity via a relation of a given kind
+- 
+
+### onos-api
+- [docLink](https://docs.sd-ran.org/master/onos-api/README.html) | [gitRepo](https://github.com/onosproject/onos-api) | [dockerImage] (https://hub.docker.com/r/onosproject/onos-api) 
+- gRPC API definitions for the µONOS platform.
+- All of the protobuf definitions are available [here](https://github.com/onosproject/onos-api/tree/master/proto)
+- It also includes python definitions.
+
+
+### onos-mlb
+- [docLink](https://docs.sd-ran.org/master/onos-mlb/README.html) | [gitRepo](https://github.com/onosproject/onos-mlb) | [dockerImage] (https://hub.docker.com/r/onosproject/onos-mlb)
+- The xApplication for ONOS SD-RAN (µONOS Architecture) to balance load among connected cells (mobility load balancing)
+- For the load balancing, this application adjusts neighbor cells’ cell individual offset (Ocn). If a cell becomes overloaded, this application tries to offload the cell’s load to the neighbor cells that have enough capacity. Adjusting neighbor cells’ Ocn triggers measurement events; it triggers handover events from a cell to it’s neighbor cells. As a result, by adjusting Ocn, the load of overloaded cell will be offloaded to the neighbor cells.
+- To begin with, onos-mlb defines each cell’s load as the number of active UEs, not considering other factors yet. If a cell services the most active UEs, the onos-mlb application considers that the cell suffers from the heaviest load. Then, this application defines two thresholds: (i) overload threshold and (ii) target threshold. A cell with the load that exceeds the overloaded threshold is an overloaded cell. On the other hands, a cell with the load that is less than target threshold has enough capacity.
+- With the above definition, there are two conditions. (1) if a cell’s load > overload threshold and its neighbor cell’s load < target threshold, the xApplication increases Ocn of the neighbor cell. (2) if a cell’s load < target threshold, the xApplication decreases all neighbors’ Ocn.
+- The increased Ocn makes the measurement event happening sensitively, which brings about more handover events happening to move some UEs to the neighbor cells, i.e., offloading. On the contrary, the measurement events happen conservatively with the decreased Ocn; it leads to the less handover events happening to avoid neighbor cells overloaded.
+- The described algorithm runs periodically. By default, it is set to 10 seconds. The Ocn delta value (i.e., how many the application changes Ocn value) is configurable. By default, it is set to 3 to 6.
+
+
+
+

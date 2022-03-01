@@ -4,14 +4,16 @@
 - [x] Deploying uONOS and SD-RAN Simulator! 
 - [ ] Simulating a RAN instance: a few BSs and UEs, etc.
 - [ ] Investigating uONOS components: 
-  - [ ] onos-kpimon [gathering metrics]
-    - [ ] Investigating Go source code 
-    - [ ] Investigating RRc protocol to understand what are the provided kpis
-  - [ ] onos-mho [responsible for mobile handover]
-  - [x] onos-rsm [RAN slicing management]
-  - [ ] onos-ransim
-  - [x] onos-uenib
-  - [ ] onos-topo
+  - [ ] onos-kpimon [gathering metrics] 
+    - [ ] Investigating Go source code
+    - [ ] Investigating RRC protocol to understand what are the provided KPIs 
+  - [x] onos-mho [responsible for mobile handover] 
+  - [x] onos-rsm [RAN slicing management] 
+  - [ ] onos-ransim 
+  - [x] onos-uenib 
+  - [x] onos-topo 
+  - [ ] onos-api
+  - [ ] onos-mlb
 - [ ] Investigating Honeycomb Topology Generator options in modelling RAN
 - [ ] Investigating RAN simulator gRPC APIs and onos cli
 - [ ] 
@@ -109,7 +111,7 @@ onos mho get ues
 onos uenib get ues [-v]
 onos uenib get ue <ueID> [-v]
 ```
-- Working with ``onos-ransim``
+- Working with ``onos-ransim`` | [docLink](https://github.com/onosproject/onos-cli/blob/master/docs/cli/onos_ransim.md)
 ``` Bash
 onos ransim get cells
 onos ransim get ues
@@ -118,24 +120,24 @@ onos ransim get ue <ueID>
 - Working with ``onos-rsm``
 ``` Bash
 ## Creating a slice
-onos-cli$ kubectl exec -it deployment/onos-cli -n riab -- onos rsm create slice --e2NodeID <DU_E2_NODE_ID> --scheduler <SCHEDULER_TYPE> --sliceID <SLICE_ID> --weight <WEIGHT> --sliceType <SLICE_TYPE>
+onos rsm create slice --e2NodeID <DU_E2_NODE_ID> --scheduler <SCHEDULER_TYPE> --sliceID <SLICE_ID> --weight <WEIGHT> --sliceType <SLICE_TYPE>
 # example:
-onos-cli$ kubectl exec -it deployment/onos-cli -n riab -- onos rsm create slice --e2NodeID e2:4/e00/3/c8 --scheduler RR --sliceID 1 --weight 30 --sliceType DL
+onos rsm create slice --e2NodeID e2:4/e00/3/c8 --scheduler RR --sliceID 1 --weight 30 --sliceType DL
 
 ## Update a slice
-onos-cli$ kubectl exec -it deployment/onos-cli -n riab -- onos rsm update slice --e2NodeID <DU_E2_NODE_ID> --scheduler <SCHEDULER_TYPE> --sliceID <SLICE_ID> --weight <WEIGHT> --sliceType <SLICE_TYPE>
+onos rsm update slice --e2NodeID <DU_E2_NODE_ID> --scheduler <SCHEDULER_TYPE> --sliceID <SLICE_ID> --weight <WEIGHT> --sliceType <SLICE_TYPE>
 # example:
-onos-cli$ kubectl exec -it deployment/onos-cli -n riab -- onos rsm update slice --e2NodeID e2:4/e00/3/c8 --scheduler RR --sliceID 1 --weight 50 --sliceType DL
+onos rsm update slice --e2NodeID e2:4/e00/3/c8 --scheduler RR --sliceID 1 --weight 50 --sliceType DL
  
 ## Delete a slice
-onos-cli$ kubectl exec -it deployment/onos-cli -n riab -- onos rsm delete slice --e2NodeID <DU_E2_NODE_ID> --sliceID <SLICE_ID> --sliceType <SLICE_TYPE>
+onos rsm delete slice --e2NodeID <DU_E2_NODE_ID> --sliceID <SLICE_ID> --sliceType <SLICE_TYPE>
 # example:
-onos-cli$ kubectl exec -it deployment/onos-cli -n riab -- onos rsm delete slice --e2NodeID e2:4/e00/3/c8 --sliceID 1 --sliceType DL
+onos rsm delete slice --e2NodeID e2:4/e00/3/c8 --sliceID 1 --sliceType DL
 
 ## UE-slice association
-onos-cli$ kubectl exec -it deployment/onos-cli -n riab -- onos rsm set association --dlSliceID <SLICE_ID> --e2NodeID <DU_E2_NODE_ID> --drbID <DRB_ID> --DuUeF1apID <DU_UE_F1AP_ID>
+onos rsm set association --dlSliceID <SLICE_ID> --e2NodeID <DU_E2_NODE_ID> --drbID <DRB_ID> --DuUeF1apID <DU_UE_F1AP_ID>
 # example:
-onos-cli$ kubectl exec -it deployment/onos-cli -n riab -- onos rsm set association --dlSliceID 1 --e2NodeID e2:4/e00/3/c8 --drbID 5 --DuUeF1apID 1240
+onos rsm set association --dlSliceID 1 --e2NodeID e2:4/e00/3/c8 --drbID 5 --DuUeF1apID 1240
 ```
 - Working with ``onos-uenib``
 ``` Bash
@@ -145,6 +147,22 @@ onos uenib create ue 9182838476 --aspect operator.CustomData='{"foo": "bar", "sp
 onos uenib get ue 9182838476 --verbose # Show all aspect data in verbose form for a given UE:
 onos uenib watch ues --no-replay # Watch all changes in the UE NIB, without replay of existing UE information:
 onos uenib delete ue 9182838476 --aspect operator.CustomData # Delete CustomData aspect for a specific UE:
+```
+- Working with ``onos-cli`` | [docLink](https://github.com/onosproject/onos-cli/blob/master/docs/cli/onos_topo.md)
+``` Bash
+onos topo get entities # List all entities
+onos topo get entities --kind e2node # List all entities of e2node kind.
+onos topo get entities --related-to 5153 --related-via contains # List all e2cell entities related to the specified e2node via contains relation.
+onos topo get entity 1454c001 -v # Show verbose information on entity 1454c001
+onos topo get relations --kind neighbors # Show all neighbors relations
+onos topo create entity "virtual" --aspect onos.topo.Configurable='{"type": "devicesim-1.0.x", "version": "1.0.0"}' # Create a new entity with sparsely populated Configurable aspect
+```
+- Working with ``onos-mlb`` | [docLink]()
+``` Bash
+onos mlb list ocns # to see Ocn values for each cell
+onos mlb list parameters # to see mlb parameters
+onos mlb set parameters --interval 20 # to change mlb parameters
+
 ```
 
 ### Useful links!
