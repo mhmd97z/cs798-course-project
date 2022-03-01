@@ -9,8 +9,9 @@
     - [ ] Investigating RRc protocol to understand what are the provided kpis
   - [ ] onos-mho [responsible for mobile handover]
   - [x] onos-rsm [RAN slicing management]
-  - [ ] onos-ransim [ ]
-  - [ ] onos-uenib [ ]
+  - [ ] onos-ransim
+  - [x] onos-uenib
+  - [ ] onos-topo
 - [ ] Investigating Honeycomb Topology Generator options in modelling RAN
 - [ ] Investigating RAN simulator gRPC APIs and onos cli
 - [ ] 
