@@ -5,8 +5,12 @@
 - [ ] Simulating a RAN instance: a few BSs and UEs, etc.
 - [ ] Investigating uONOS components: 
   - [ ] onos-kpimon [gathering metrics]
+    - [ ] Investigating Go source code 
+    - [ ] Investigating RRc protocol to understand what are the provided kpis
   - [ ] onos-mho [responsible for mobile handover]
-  - [ ] onos-rsm [RAN slicing management]
+  - [x] onos-rsm [RAN slicing management]
+  - [ ] onos-ransim [ ]
+  - [ ] onos-uenib [ ]
 - [ ] Investigating Honeycomb Topology Generator options in modelling RAN
 - [ ] Investigating RAN simulator gRPC APIs and onos cli
 - [ ] 
@@ -32,8 +36,10 @@
   - Then, you will first deploy sd-ran components [in the sd-ran namespace], after which you'd deploy ran-simulator [again, in the sd-ran namespace].
 
 **Note:**
-RAN simulator is not enabled in the sd-ran chart by default. You can enable it when you deploy sd-ran helm chart using the following command
+- RAN simulator is not enabled in the sd-ran chart by default. You can enable it when you deploy sd-ran helm chart using the following command
 ``helm install sd-ran sd-ran -n sd-ran --set import.ran-simulator.enabled=true``
+- By default, RANSim uses the model.yaml model file. To use a different model, e.g. the two-cell-two-node-model, specify the model as follows:
+``helm install --set import.ran-simulator.enabled=true --set import.onos-mho.enabled=true --set ran-simulator.pci.modelName=two-cell-two-node-model sd-ran sd-ran``
 
 
 ### Useful Kub commands
@@ -49,7 +55,7 @@ RAN simulator is not enabled in the sd-ran chart by default. You can enable it w
 - ``kubectl describe pods my-pod``: get the detail of a pod
 - ``docker exec -it -u root <Container_ID> /bin/bash``: to get root access to the docker, run this command on the corresponding node
 - ``kubectl delete --all pods --namespace=foo``
-
+- ``helm delete -n micro-onos onos-uenib``:  uninstall the onos-uenib chart
 
 ### Deployed pods
 
@@ -76,7 +82,7 @@ onos-uenib-645fbc8574-4hjj4      3/3     Running   0          98m
 ran-simulator-6c9697b594-mrgg8   1/1     Running   0          57m
 ```
 
-## Working with SD-RAN
+## SD-RAN commands cheatsheet! 
 - Getting access to the **onos-cli**:
 
 You can either setup it from [here](https://docs.onosproject.org/onos-cli/docs/setup/),
@@ -90,14 +96,55 @@ OR run your commands using ``kubectl exec`` with this [instruction](https://kube
 clipod=$(kubectl -n sd-ran get pods | grep onos-cli | cut -d\  -f1)
 kubectl -n sd-ran exec --stdin $clipod -- /usr/local/bin/onos ransim get nodes
 ```
+
 - Working with ``onos-kpimon``
-```
+``` Bash
 onos kpimon list metrics
 ```
+- Working with ``onos-mho``
+``` Bash
+onos mho get cells
+onos mho get ues
+onos uenib get ues [-v]
+onos uenib get ue <ueID> [-v]
+```
+- Working with ``onos-ransim``
+``` Bash
+onos ransim get cells
+onos ransim get ues
+onos ransim get ue <ueID>
+```
+- Working with ``onos-rsm``
+``` Bash
+## Creating a slice
+onos-cli$ kubectl exec -it deployment/onos-cli -n riab -- onos rsm create slice --e2NodeID <DU_E2_NODE_ID> --scheduler <SCHEDULER_TYPE> --sliceID <SLICE_ID> --weight <WEIGHT> --sliceType <SLICE_TYPE>
+# example:
+onos-cli$ kubectl exec -it deployment/onos-cli -n riab -- onos rsm create slice --e2NodeID e2:4/e00/3/c8 --scheduler RR --sliceID 1 --weight 30 --sliceType DL
 
+## Update a slice
+onos-cli$ kubectl exec -it deployment/onos-cli -n riab -- onos rsm update slice --e2NodeID <DU_E2_NODE_ID> --scheduler <SCHEDULER_TYPE> --sliceID <SLICE_ID> --weight <WEIGHT> --sliceType <SLICE_TYPE>
+# example:
+onos-cli$ kubectl exec -it deployment/onos-cli -n riab -- onos rsm update slice --e2NodeID e2:4/e00/3/c8 --scheduler RR --sliceID 1 --weight 50 --sliceType DL
+ 
+## Delete a slice
+onos-cli$ kubectl exec -it deployment/onos-cli -n riab -- onos rsm delete slice --e2NodeID <DU_E2_NODE_ID> --sliceID <SLICE_ID> --sliceType <SLICE_TYPE>
+# example:
+onos-cli$ kubectl exec -it deployment/onos-cli -n riab -- onos rsm delete slice --e2NodeID e2:4/e00/3/c8 --sliceID 1 --sliceType DL
 
-
-
+## UE-slice association
+onos-cli$ kubectl exec -it deployment/onos-cli -n riab -- onos rsm set association --dlSliceID <SLICE_ID> --e2NodeID <DU_E2_NODE_ID> --drbID <DRB_ID> --DuUeF1apID <DU_UE_F1AP_ID>
+# example:
+onos-cli$ kubectl exec -it deployment/onos-cli -n riab -- onos rsm set association --dlSliceID 1 --e2NodeID e2:4/e00/3/c8 --drbID 5 --DuUeF1apID 1240
+```
+- Working with ``onos-uenib``
+``` Bash
+onos uenib get ues --aspect onos.uenib.CellInfo # List CellInfo and SubscriberData of all UEs, that have these aspects.
+onos uenib create ue 9182838476 --aspect operator.CustomData='{"foo": "bar", "special": true}'
+ # Create a new CustomData aspect for a UE:
+onos uenib get ue 9182838476 --verbose # Show all aspect data in verbose form for a given UE:
+onos uenib watch ues --no-replay # Watch all changes in the UE NIB, without replay of existing UE information:
+onos uenib delete ue 9182838476 --aspect operator.CustomData # Delete CustomData aspect for a specific UE:
+```
 
 ### Useful links!
 - [General Instructions](https://docs.onosproject.org/onos-cli/docs/cli/onos/) 
