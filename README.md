@@ -2,8 +2,7 @@
 
 ## ToDo List
 - [x] Deploying uONOS and SD-RAN Simulator! 
-- [ ] Simulating a RAN instance: a few BSs and UEs, etc.
-- [ ] Investigating uONOS components: 
+- [x] Investigating uONOS components: 
   - [x] onos-kpimon [gathering metrics] 
   - [x] onos-mho [responsible for mobile handover] 
   - [x] onos-rsm [RAN slicing management] 
@@ -11,17 +10,18 @@
   - [x] onos-topo 
   - [x] onos-api 
   - [x] onos-mlb 
-- [ ] Investigating Honeycomb Topology Generator options in modelling RAN
+- [x] Investigating Honeycomb Topology Generator options in modelling RAN
+  - [x] model.yaml file detail 
 - [ ] Investigating RAN simulator gRPC APIs and onos cli
   - [ ] Protobuf structure
 - [ ] Read about NR Terminology
   - [ ] Honeycomb
   - [ ] onos components 
   - [ ] Investigating RRC protocol to understand what are the provided KPIs 
-- [ ] How PRBs are being allocated accross slices?
-- [ ] How to simulate a scenario comprising of sending traffic and 
-- [ ] model.yaml file detail
-
+- [ ] * How PRBs are being allocated accross slices?
+- [ ] * How to simulate a scenario comprising of sending traffic 
+- [ ] * What about the core? Do we need 
+- [ ] * Investigating python sdk
 
 
 ## Steps to Deploy SD-RAN Components using Kubernetes
