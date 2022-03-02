@@ -4,18 +4,24 @@
 - [x] Deploying uONOS and SD-RAN Simulator! 
 - [ ] Simulating a RAN instance: a few BSs and UEs, etc.
 - [ ] Investigating uONOS components: 
-  - [ ] onos-kpimon [gathering metrics] 
-    - [ ] Investigating Go source code
-    - [ ] Investigating RRC protocol to understand what are the provided KPIs 
+  - [x] onos-kpimon [gathering metrics] 
   - [x] onos-mho [responsible for mobile handover] 
   - [x] onos-rsm [RAN slicing management] 
   - [x] onos-uenib 
   - [x] onos-topo 
-  - [x] onos-api
-  - [x] onos-mlb
+  - [x] onos-api 
+  - [x] onos-mlb 
 - [ ] Investigating Honeycomb Topology Generator options in modelling RAN
 - [ ] Investigating RAN simulator gRPC APIs and onos cli
-- [ ] 
+  - [ ] Protobuf structure
+- [ ] Read about NR Terminology
+  - [ ] Honeycomb
+  - [ ] onos components 
+  - [ ] Investigating RRC protocol to understand what are the provided KPIs 
+- [ ] How PRBs are being allocated accross slices?
+- [ ] How to simulate a scenario comprising of sending traffic and 
+- [ ] model.yaml file detail
+
 
 
 ## Steps to Deploy SD-RAN Components using Kubernetes
@@ -167,3 +173,11 @@ onos mlb set parameters --interval 20 # to change mlb parameters
 ### Useful links!
 - [General Instructions](https://docs.onosproject.org/onos-cli/docs/cli/onos/) 
 - [SD-RAN Documentation](https://docs.sd-ran.org/master/index.html)
+
+
+### Timeline
+- Deploy a testbed based on open-source solutions offered by ONF, we will be using their SD-RANsimulator to implement the different RAN data plane components and theμonos nRT-RIC asthe control plane -> 
+- Explore the available features and telemetry that we obtain from the data plane to serve as inputto our RRM algorithm and its control knobs. -> 
+- Study existing developed RRM xApps, investigate their shortcomings and determine what im-provements can be done. -> 
+- Replicating some existing solutions as the baseline. -> 
+- Develop an algorithm based on machine or reinforcement learning methods for radio resourcemanagement. -> 
