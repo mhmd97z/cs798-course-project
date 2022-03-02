@@ -1,6 +1,6 @@
-## uONOS 
+## uONOS
 
-### Basics
+## Basics
 - ONOS RIC consists of multiple micro-services, each is deployed as a Kubernetes pod, and communication between micro-services are mainly done through gRPC.
 - The majority of the micro-services are implemented in GO, with the E2 interface decoding and encoding implemented in C.
 
@@ -10,39 +10,120 @@
   - **onos-e2t** micro-service is the one that actually connects E2 nodes with xApps. This micro-service terminates E2 interfaces, manages subscriptions, and hosts xApps.
   - In the implementation of ONOS RIC, communication between **onos-e2t** and xApps are done through Protobuf messages, instead of E2 messages (which are in ASN.1 syntax).
   - **onos-e2t** micro-service is also responsible for maintaining topology of all E2 nodes connected and storing a list of RAN functions supported by each E2 node using information gathered from setup stage and service update requests. This micro-service stores information using APIs exposed by **onos-topo** and **onos-uenib**.
-- **onos-topo**
-  - ONOS RIC uses **onos-topo** as a R-NIB storage. Specifically, information regarding E2 nodes and their relationship, information regarding cells and slicing are stored using **onos-topo** to manage and provide a shared view of the overall RAN system.
-- **onos-uenib**
-  - UE-related information is stored using APIs provided by **onos-uenib**, a new micro-service designed specifically to store and track UE information with minimum latency and high throughput rate.
+  - Get:
+    - subscriptions
+      - Service Model ID -> oran-e2sm-mho:v2, oran-e2sm-kpm:v2
+      - E2 NodeID -> Entity id: e2:1/5154, e2:1/5153
+      - State -> SUBSCRIPTION_COMPLETE
 - **onos-e2-sm**
   - Service models are implemented in **onos-e2-sm**. It is a shared library that contains all supported service models and mapping between the ASN.1 definition (for E2 messages) and protobuf definition (for xApps) of the service models. By using a separate library, ONOS RIC decouples service model with the remaining system, making ONOS RIC capable of handling any E2SM.
+- **onos-topo**
+  - ONOS RIC uses **onos-topo** as a R-NIB storage. Specifically, information regarding E2 nodes and their relationship, information regarding cells and slicing are stored using **onos-topo** to manage and provide a shared view of the overall RAN system.
+  - Get:
+    - NaN
+  - Set (+Get) 
+    - entity
+      - Entity ID
+      - Kind ID -> e2cell, e2t, a1t, e2node, onos-config
+      - Labels 
+      - Aspects -> onos.topo.E2Cell, onos.topo.E2TInfo,onos.topo.Lease, onos.topo.A1TInfo, onos.topo.MastershipState,onos.topo.E2Node, onos.topo.Lease
+    - kind 
+      - Kind ID -> e2t, e2cell, e2node, neighbors, controls, contains, 
+      - Name
+      - Labels
+      - Aspects 
+    - relation
+      - Relation ID
+      - Kind ID -> contains [e2node controls e2cell], controls [e2t controls e2node]
+      - Source ID -> Entity ID 
+      - Target ID -> Entity ID 
+      - Labels 
+      - Aspects 
+    - wipeout: Delete All Relations and Entities
+- **onos-uenib**
+  - UE-related information is stored using APIs provided by **onos-uenib**, a new micro-service designed specifically to store and track UE information with minimum latency and high throughput rate.
+  - Get:
+    - NaN 
+  - Set (+Get):
+    - ue information 
+      - UE ID 
+      - Aspect Types -> RRCState, RSRP-Neighbors, RSRP-Serving, CGI, 5QI [how can I get the values of these fields?]
 
 
-### Supported Service Model and xApps
+### Supported Service Models 
 Currently, all E2SMs and xApps supported by ONOS RIC are implemented in GO, however, a Python SDK is now in the beta stage and we could see xApps implemented in Python coming in the future. 
 - KPM: allows gathering metric data from E2 nodes
-  - **onos-kpimon** xApp is provided as a sample xApp that runs over this service model to collect metric data. The collected data can be retrieved through **onos-cli** command-line interface.
 - NI: currently, only the protobuf definition of this service model has been implemented
   - No xApps that run over this service model is provided by SD-RAN project.
-- RC: [RAN Control] This service model allows RIC to gather cells (PCI) and neighbor relationship.
-  - SD-RAN project provides the **onos-pci** xApp to demonstrate this service model. This xApp provides access to PCI resources through **onos-cli** command-line interface. It allows the collection of data related to PCI and PCI conflicts. This xApp is also capable of detecting and resolving PCI conflicts using built-in algorithms.
+- RC: [RAN Control] This service model allows RIC to gather cells (PCI) and neighbor relationship.  
 - MHO: [Mobile Handover] This service model handles all mobile handover procedure-related operations. This service model allows collection of signal metric data for UEs and RRC state change data. It also allows control signalling for initiating mobile handover procedures.
-  - The **onos-mho** xApp runs over this service model and serves as a sample use case for this service model.
 - RSM: [RAN Slicing Management] This service model allows creating, updating and deleting RAN slices
-  - SD-RAN project provides a simple xApp **onos-rsm** that runs over this service model. This app allows creating, updating and deleting RAN slices through a command-line interface. User is also capable of specifying a UE to a slice through the command line. This xApp would also store and update the topology and UE properties related to RAN slicing operations using **onos-topo** and **onos-uenib** accordingly.
 
 
+### xApps
+- **onos-kpimon** xApp runs over KPM service model to collect metric data. 
+  - Get:
+    - Node ID
+    - Cell Object ID
+    - Cell Global ID
+    - Time
+    - RRC.Conn.{Avg & Max}
+    - RRC.ConnEstabAtt.Sum
+    - RRC.ConnEstabSucc.Sum
+    - RRC.ConnReEstabAtt.{HOFail & Other & Sum & reconfigFail}
+  - Set (+Get): 
+    - 
+- **onos-pci** xApp demonstrates RC service model. It allows the collection of data related to PCI and PCI conflicts. This xApp is also capable of detecting and resolving PCI conflicts using built-in algorithms.
+  - [ERROR] rpc error: code = Unknown desc = no measurements entries stored
+  - Get: 
+    - 
+  - Set (+Get): 
+    - 
+- **onos-mho** xApp runs over MHO service model.
+  - Get:
+    - cells
+      - CGI
+      - Num UEs
+      - Handovers-in
+      - Handovers-out
+    - UEs
+      - UeID
+      - CellGlobalID
+      - RrcState -> CONNECTED, IDLE
+  - Set (+Get): 
+    - NaN 
+- **onos-rsm** xApp runs over RSM service model. 
+  - This app allows creating, updating and deleting RAN slices through a command-line interface. User is also capable of specifying a UE to a slice through the command line. 
+  - This xApp would also store and update the topology and UE properties related to RAN slicing operations using **onos-topo** and **onos-uenib** accordingly.
+  - Get:
+    - NaN
+  - Set (+Get): 
+    - creat slice
+      - SCHEDULER_TYPE
+      - SLICE_TYPE
+      - WEIGHT
+- **onos-mlb** xApp balances load among connected cells.
+  - The application adjusts neighbor cells’ cell individual offset (Ocn). If a cell becomes overloaded, this application tries to offload the cell’s load to the neighbor cells that have enough capacity. Adjusting neighbor cells’ Ocn triggers measurement events; it triggers handover events from a cell to it’s neighbor cells. As a result, by adjusting Ocn, the load of overloaded cell will be offloaded to the neighbor cells.
+  - Get:
+    - ocn 
+      - sCell
+      - node ID
+      - sCell PLMN ID
+      - sCell cell ID
+      - sCell object ID
+      - nCell PLMN ID
+      - nCell cell ID
+      - Ocn [dB]
+  - Set (+Get): 
+    - parameters
+      - interval [sec]
+      - Delta Ocn per step
+      - Overload threshold [%]
+      - Target threshold [%]
+
+## Detailed CLI
 ### onos-kpimon
 - [docLink](https://docs.sd-ran.org/master/onos-kpimon/README.html) | [gitRepo](https://github.com/onosproject/onos-kpimon) | [dockerImage](https://hub.docker.com/r/onosproject/onos-kpimon)
-- This xApp provides this set of KPIs:
-  - Node ID
-  - Cell Object ID
-  - Cell Global ID
-  - Time
-  - RRC.Conn.{Avg & Max}
-  - RRC.ConnEstabAtt.Sum
-  - RRC.ConnEstabSucc.Sum
-  - RRC.ConnReEstabAtt.{HOFail & Other & Sum & reconfigFail}
 - **onos-kpimon** makes a subscription with E2 nodes connected to **onos-e2t** through **onos-topo** based ONOS xApplication SDK. Creating a subscription, **onos-kpimon** sets **report interval** and **granularity period** which are the monitoring interval parameters.
 - Noticeable stuff:
   - **report interval** and **granularity period** are set to 1000 ms. I'm not sure what is the possbile minimum value.
@@ -80,6 +161,7 @@ Currently, all E2SMs and xApps supported by ONOS RIC are implemented in GO, howe
 - For example, to track UE cell connectivity, the system uses the CellInfo aspect defined as a CellConnection for the serving cell and the list of candidate cells
 - [API Examples for Golang](https://docs.sd-ran.org/master/onos-uenib/docs/api-go.html)
 
+
 ### onos-topo
 - [docLink](https://docs.sd-ran.org/master/onos-topo/README.html) | [gitRepo](https://github.com/onosproject/onos-topo) | [dockerImage] (https://hub.docker.com/r/onosproject/onos-topo)
 - The µONOS Topology subsystem provides topology management for µONOS core services and applications. 
@@ -108,6 +190,7 @@ The topology subsystem structures the topology information as a set of objects, 
   - Relation Filter: specifies target entities related to a given source entity via a relation of a given kind
 - 
 
+
 ### onos-api
 - [docLink](https://docs.sd-ran.org/master/onos-api/README.html) | [gitRepo](https://github.com/onosproject/onos-api) | [dockerImage] (https://hub.docker.com/r/onosproject/onos-api) 
 - gRPC API definitions for the µONOS platform.
@@ -118,12 +201,8 @@ The topology subsystem structures the topology information as a set of objects, 
 ### onos-mlb
 - [docLink](https://docs.sd-ran.org/master/onos-mlb/README.html) | [gitRepo](https://github.com/onosproject/onos-mlb) | [dockerImage] (https://hub.docker.com/r/onosproject/onos-mlb)
 - The xApplication for ONOS SD-RAN (µONOS Architecture) to balance load among connected cells (mobility load balancing)
-- For the load balancing, this application adjusts neighbor cells’ cell individual offset (Ocn). If a cell becomes overloaded, this application tries to offload the cell’s load to the neighbor cells that have enough capacity. Adjusting neighbor cells’ Ocn triggers measurement events; it triggers handover events from a cell to it’s neighbor cells. As a result, by adjusting Ocn, the load of overloaded cell will be offloaded to the neighbor cells.
 - To begin with, onos-mlb defines each cell’s load as the number of active UEs, not considering other factors yet. If a cell services the most active UEs, the onos-mlb application considers that the cell suffers from the heaviest load. Then, this application defines two thresholds: (i) overload threshold and (ii) target threshold. A cell with the load that exceeds the overloaded threshold is an overloaded cell. On the other hands, a cell with the load that is less than target threshold has enough capacity.
 - With the above definition, there are two conditions. (1) if a cell’s load > overload threshold and its neighbor cell’s load < target threshold, the xApplication increases Ocn of the neighbor cell. (2) if a cell’s load < target threshold, the xApplication decreases all neighbors’ Ocn.
 - The increased Ocn makes the measurement event happening sensitively, which brings about more handover events happening to move some UEs to the neighbor cells, i.e., offloading. On the contrary, the measurement events happen conservatively with the decreased Ocn; it leads to the less handover events happening to avoid neighbor cells overloaded.
 - The described algorithm runs periodically. By default, it is set to 10 seconds. The Ocn delta value (i.e., how many the application changes Ocn value) is configurable. By default, it is set to 3 to 6.
-
-
-
 
