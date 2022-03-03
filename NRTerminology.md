@@ -95,3 +95,8 @@ There are three main states that the connection can have:
   - https://www.techplayon.com/5g-nr-standardized-qos-identifier-5gqi-to-qos-characteristics-mapping/
 - **IMSI**: IMSI is a unique ID that globally identifies a mobile subscriber
 - **CRNTI**: Cell RNTI (C-RNTI) is a unique identification used for identifying RRC Connection and scheduling which is dedicated to a particular UE. The gNB assigns different C-RNTI values to different UEs. The gNB uses C-RNTI to allocate a UE with uplink grants, downlink assignments, etc. C-RNTI is used by gNB to differentiate uplink transmissions (e.g. PUSCH, PUCCH) of a UE from others.
+
+
+
+### EARFCN
+- 
