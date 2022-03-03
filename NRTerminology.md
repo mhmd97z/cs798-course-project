@@ -17,7 +17,7 @@ There are three main states that the connection can have:
 **RRC Reconfiguration** is the most important steps in establishing Radio Connection between UE and Network. Connection reconfiguration is triggered by LTE or NR, and then the ue will send a connection reconfiguration complete message in response. After which, there will be an established connection. Needless to say, there's some initial configuration in the beginning [RRC Setup], and then you reconfigure that!
 
 - The major functionality of RRC Reconfiguration and their operations:
-  - Radio Bearer
+  - Radio Bearer 
     - Establish
     - Modify
     - Release
@@ -25,7 +25,7 @@ There are three main states that the connection can have:
     - Setup
     - Modify
     - Release
-  - Scells or Cell Group
+  - Scells or Cell Group 
     - Add
     - Modify
     - Release
@@ -64,15 +64,7 @@ There are three main states that the connection can have:
 
 - ncgi [NR Cell Global Identifier (NCGI) is used to identify NR cells globally and is constructed from the PLMN ID the cell belongs to and the NR Cell Identity (NCI) of the cell]
 - sector [a geographic area defined by WSP(according to WSP’s own radio frequency coverage data), and consisting of a certain portion or all of the total coverage area of a Cell Site]
-  - center
-    - lat 
-    - lng
-  - azimuth: 240
-  - arc: 120
-  - tilt: -6 
-  - height: 29
-- neighbors: [ncgi] 
-- txpowerdb: 11
+
 - measurementparams:
   - timetotrigger: 0
   - frequencyoffset: 0
@@ -95,8 +87,3 @@ There are three main states that the connection can have:
   - https://www.techplayon.com/5g-nr-standardized-qos-identifier-5gqi-to-qos-characteristics-mapping/
 - **IMSI**: IMSI is a unique ID that globally identifies a mobile subscriber
 - **CRNTI**: Cell RNTI (C-RNTI) is a unique identification used for identifying RRC Connection and scheduling which is dedicated to a particular UE. The gNB assigns different C-RNTI values to different UEs. The gNB uses C-RNTI to allocate a UE with uplink grants, downlink assignments, etc. C-RNTI is used by gNB to differentiate uplink transmissions (e.g. PUSCH, PUCCH) of a UE from others.
-
-
-
-### EARFCN
-- 

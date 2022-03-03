@@ -13,12 +13,12 @@
 - [x] Investigating Honeycomb Topology Generator options in modelling RAN
   - [x] model.yaml file detail 
     - [ ] pitch between cells
-    - [ ] max-collisions
+    - [ ] max-collisions 
     - [ ] earfcn 
     - [ ] deform 
-    - [ ] measurement params: timetotrigger, frequencyoffset, pcellindividualoffset, pcellindividualoffset, ncellindividualoffsets, hysteresis, eventa3params [a3offset, reportonleave]
-- [ ] Investigating RAN simulator gRPC APIs and onos cli
-  - [ ] Protobuf structure
+    - [ ] measurement params: timetotrigger, frequencyoffset, pcellindividualoffset, pcellindividualoffset, ncellindividualoffsets, hysteresis, eventa3params [a3offset, reportonleave] 
+- [ ] Investigating RAN simulator gRPC APIs and onos cli 
+  - [ ] Protobuf structure 
 - [ ] Read about NR Terminology
   - [ ] onos components 
   - [ ] Investigating RRC protocol to understand what are the provided KPIs 
