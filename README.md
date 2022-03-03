@@ -12,15 +12,19 @@
   - [x] onos-mlb 
 - [x] Investigating Honeycomb Topology Generator options in modelling RAN
   - [x] model.yaml file detail 
+    - [ ] pitch between cells
+    - [ ] max-collisions
+    - [ ] earfcn 
+    - [ ] deform 
+    - [ ] measurement params: timetotrigger, frequencyoffset, pcellindividualoffset, pcellindividualoffset, ncellindividualoffsets, hysteresis, eventa3params [a3offset, reportonleave]
 - [ ] Investigating RAN simulator gRPC APIs and onos cli
   - [ ] Protobuf structure
 - [ ] Read about NR Terminology
-  - [ ] Honeycomb
   - [ ] onos components 
   - [ ] Investigating RRC protocol to understand what are the provided KPIs 
 - [ ] * How PRBs are being allocated accross slices?
 - [ ] * How to simulate a scenario comprising of sending traffic 
-- [ ] * What about the core? Do we need 
+  - [ ] * What about the core? Do we need?
 - [ ] * Investigating python sdk
 
 
