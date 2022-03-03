@@ -87,3 +87,22 @@ There are three main states that the connection can have:
   - https://www.techplayon.com/5g-nr-standardized-qos-identifier-5gqi-to-qos-characteristics-mapping/
 - **IMSI**: IMSI is a unique ID that globally identifies a mobile subscriber
 - **CRNTI**: Cell RNTI (C-RNTI) is a unique identification used for identifying RRC Connection and scheduling which is dedicated to a particular UE. The gNB assigns different C-RNTI values to different UEs. The gNB uses C-RNTI to allocate a UE with uplink grants, downlink assignments, etc. C-RNTI is used by gNB to differentiate uplink transmissions (e.g. PUSCH, PUCCH) of a UE from others.
+
+### EARFCN
+- EARFCN stands for E-UTRA Absolute Radio Frequency Channel Number.In LTE, the carrier frequency in the uplink and downlink is designated by EARFCN, which ranges between 0-65535.
+- EARFCN uniquely identify the LTE band and carrier frequency.
+- For example Band-1 and Band-4 can have same Rx frequency 2110-2170 MHz,  but their EARFCN are different.
+- EARFCN is independent of channel bandwidth.
+- To check EARFCN value on an Android phone, use the LTE Discovery app, tap SIGNALS, check EARFCN(band number), ‘DL Freq and UL Freq’.
+ 
+- The relation between EARFCN and its uplink/downlink carrier frequency is given by the equation below
+Fdownlink=FDLLow+0.1(NDL−NDLOffset)Fdownlink=FDLLow+0.1(NDL-NDLOffset)
+Fuplink=FULLow+0.1(NUL−NULOffset)
+
+where,
+
+NDL = downlink EARFCN
+NUL = uplink EARFCN
+NDLoffset = offset used to calculate downlink EARFCN
+NULoffset = offset used to calculate uplink EARFCN
+- EARFCN of carrier frequency can be calculated with Eq-(1) or Eq-(2) using FDL_low, NOffs-DL, FUL_low and NOffs-UL given in the table here: https://www.cablefree.net/wirelesstechnology/4glte/lte-carrier-frequency-earfcn/#:~:text=EARFCN%20stands%20for%20E%2DUTRA,LTE%20band%20and%20carrier%20frequency.
