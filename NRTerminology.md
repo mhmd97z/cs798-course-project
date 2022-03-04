@@ -31,7 +31,7 @@ There are three main states that the connection can have:
     - Release
 
 
-## Carrier Aggregation
+### Carrier Aggregation
 - [this link](https://info-nrlte.com/tag/secondary-cell-group/) 
 - It aggregates multiple component carriers (CC), which can be jointly used for transmission to/from a single device. It combines two or more carriers into one data channel to enhance the data capacity of a network. -> Up to 16 carriers (contiguous and non-contiguous) can be aggregated, resulting in overall transmission bandwidths of up to 6,400 MHz (16 x 400 MHz).
 - The carriers do not have to be contiguous in the frequency domain but can be dispersed, both in the same frequency band as well as in different frequency bands, resulting in three difference scenarios:
@@ -41,6 +41,17 @@ There are three main states that the connection can have:
 - A carrier-aggregation-capable device can receive and transmit from/to multiple cells. One of these cells is referred to as the primary cell (PCell). This is the cell which the device initially finds and connects to, after which one or more secondary cells (SCells) can be configured, once the device is in connected mode. The secondary cells can be rapidly activated or deceived to meet the variations in the traffic pattern. Furthermore, the number of carriers (or cells) does not have to be the same in UL and DL. 
 - Carrier aggregation uses L1/L2 control signaling for the same reason as when operating with a single carrier. 
 - As baseline, all the feedback is transmitted on the primary cell. But there are other considerations: for many downlink component carriers, a single uplink carrier may carry a large number of acknowledgments. To avoid overloading a single carrier, it is possible to configure two PUCCH groups where feedback relating to the first group is transmitted in the uplink of the PCell and feedback relating to the other group of carriers is transmitted on the primary second cell (PSCell).
+
+
+### PCI conflict
+Each LTE cell has two identifiers, with different purposes – the Global Cell ID and the PCI. The Global Cell ID is used to identify the cell from an Operations, Administration and Management (OAM) perspective. The PCI has a value in the range of 0 to 503, and is used to scramble the data in order to allow mobile phones to separate information from different eNB. Since a LTE network may contain a much larger number of cells than the 504 available numbers of PCIs, the same PCI must be reused by different cells.
+
+However, an UE, which is any device used directly by an end-user to communicate, cannot distinguish between two cells if both have the same PCI and frequency bands; this phenomenon is called a PCI conflict. PCI conflicts can be divided into two situations – PCI confusions and PCI collisions.
+
+A PCI confusion occurs whenever a E-UTRAN cell has two different neighbor E-UTRAN cells with equal PCI and frequency.
+A PCI collision happens whenever a E-UTRAN cell has a neighbor E-UTRAN cell with identical PCI and frequency.
+
+
 
 
 ### Cell

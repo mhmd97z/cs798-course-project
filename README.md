@@ -13,7 +13,7 @@
 - [x] Investigating Honeycomb Topology Generator options in modelling RAN
   - [x] model.yaml file detail 
     - [ ] pitch between cells
-    - [ ] max-collisions 
+    - [x] max-collisions 
     - [ ] earfcn 
     - [ ] deform 
     - [ ] measurement params: timetotrigger, frequencyoffset, pcellindividualoffset, pcellindividualoffset, ncellindividualoffsets, hysteresis, eventa3params [a3offset, reportonleave] 
@@ -26,7 +26,11 @@
 - [ ] * How to simulate a scenario comprising of sending traffic 
   - [ ] * What about the core? Do we need?
 - [ ] * Investigating python sdk
-
+- [ ] + Overhead  of collecting CQI values: 
+  - [ ] + How often it's changing 
+  - [ ] + Actual data Vs headers 
+- [ ] + VNFs
+- [ ] + Non-real-time RIC. How would that be compatible with this setup?
 
 ## Steps to Deploy SD-RAN Components using Kubernetes
 - Setting up Kubernetes
