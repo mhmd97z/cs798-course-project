@@ -18,10 +18,11 @@
     - [ ] deform 
     - [ ] measurement params: timetotrigger, frequencyoffset, pcellindividualoffset, pcellindividualoffset, ncellindividualoffsets, hysteresis, eventa3params [a3offset, reportonleave] 
 - [ ] Investigating RAN simulator gRPC APIs and onos cli 
-  - [ ] Protobuf structure 
-- [ ] Read about NR Terminology
-  - [ ] onos components 
-  - [ ] Investigating RRC protocol to understand what are the provided KPIs 
+  - [x] Protobuf structure 
+  - [ ] provided gRPC
+- [x] Read about NR Terminology
+  - [x] onos components 
+  - [x] Investigating RRC protocol to understand what are the provided KPIs 
 - [ ] * How PRBs are being allocated accross slices?
 - [ ] * How to simulate a scenario comprising of sending traffic 
   - [ ] * What about the core? Do we need?
