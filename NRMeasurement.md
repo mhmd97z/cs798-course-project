@@ -2,6 +2,10 @@
 - https://www.techplayon.com/5g-nr-measurement-events/
 - https://www.powerstream.com/watts-and-dbm-for-radio.htm
 - https://www.techplayon.com/5g-nr-measurement-serving-cell-and-neighbor-cell/
+- https://www.techplayon.com/5g-nr-measurements-rsrp-rssi-rsrq-and-sinr/
+- https://www.techplayon.com/5g-nr-sinr-measurement-and-its-mapping/
+- https://www.techplayon.com/5g-nr-rsrq-measurements-and-its-mapping/
+- 
 
 ## Basics
 In any telecom technology (2G, 3G, 4G or 5G), mobility (handover) decision whether mobile device will be handover or not is taken by base station based on measurement reports from the mobile device. 
@@ -119,3 +123,39 @@ The SSB periodicity can be configured for each cell in the range of 5,10,20,40,8
 3GPP specifications has introduced SSB-based RRM Measurement Timing Configuration window (called SMTC window) shall be notify to Device (UE) regarding the measurement periodicity and timings of SSBs that Device (UE) can use for measurements.
 
 SMTC window periodicity can be set in the same range of SSB i.e. 5, 10, 20, 40, 80 or 160 ms and window duration can be set to 1, 2, 3, 4, or 5 ms, according to the number of SSBs transmitted on the cell being measured. Here we can see that NR cell “A” and NR cell “B” are measured with different window periodicity and different window duration.  When a Device (UE) has been notified of SMTC window by base station, it detects and measure the SSBs within that window and reports the measurement results back to the base station.
+
+## More detail on KPIs
+In LTE, the UE measurements are done for RSRP, RSRQ and SNR associated with CRS (Cell Specific Reference Signal).  5G NR uses  SS (Synchronization Signal) and CSI (Channel State Information) instead of CRS, so 3GPP had put new definitions for UE measurements in place
+
+
+### RSRQ
+The SS-RSRQ measurements can be used for cell selection, cell reselection and mobility procedures where as CSI-RSRQ measurements can be used for mobility procedures only.
+
+- It is the quantitive measure of recieved Reference Signals for SS (Sync Singal) or CSI ( Channel State Infonnation)
+- RSRQ is measured in dB (decibal) where as RSSI and RSRP are measurement in dBm
+- The RSRQ measurement can be used for cell selection, reselection and mobility (handover) procedures.
+- UE does not report RSRQ is dB instead it reports an index value which is mapped to some RSRQ value by specification
+- UE reports RSRQ measurement to gNB within RRC: Measurement Report (MR) message, when gNB RRC configures Report Quantity for RSRQ
+
+
+**SS-RSRQ** stands for Secondary synchronization Signal Reference Signal Received Quality. It is defined as the ratio of N×SS-RSRP /NR carrier RSSI, where N is the number of resource blocks in the NR carrier RSSI measurement bandwidth.
+
+**CSI-RSRQ** is defined as the ratio of N×CSI-RSRP to CSI-RSSI, where N is the number of resource blocks in the RSSI measurement bandwidth
+
+### RSRP
+UE does measurement of SS-RSRP and use it for cell selection, cell reselection, power control, mobility procedures and beam management procedures. RSRP measurement generated and reported at both Layer 1 (Phy) and Layer 3 (RRC). For example, a UE can measure SS-RSRP at Layer 1 when sending CSI to the gNB and provides results at Layer 3 when sending Measurement Reports.
+
+
+**SS-RSRP** stands for Synchronization Signal reference signal received power. It is defined as the linear average over the power contributions (in Watt) of the resource elements that carry SSS.
+
+**CSI-RSRP** stands for CSI reference signal received power. It is defined as the linear average over the power contributions (in watt) of the resource elements that carry CSI-RS configured for RSRP measurements within the considered measurement frequency bandwidth in the configured CSI-RS occasions
+
+### RSSI
+**NR-RSSI** stands for NR carrier Received Signal Strength Indicator, it comprises the linear average of the total received power (in Watt) observed only in certain OFDM symbols of measurement time resource(s), in the measurement bandwidth, over N number of resource blocks from all sources, including co-channel serving and non-serving cells, adjacent channel interference, thermal noise etc.
+
+**CSI-RSSI** stands for CSI Received Signal Strength Indicator, it comprises the linear average of the total received power (in Watt) observed only in OFDM symbols of measurement time resource(s), in the measurement bandwidth, over N number of resource blocks from all sources, including cochannel serving and non-serving cells, adjacent channel interference, thermal noise etc.
+
+### SINR
+**SS-SINR** stands for SS signal-to-noise and interference ratio. It is defined as the linear average over the power contribution (in Watt) of the resource elements carrying SSS divided by the linear average of the noise and interference power contribution (in Watt) over the resource elements carrying SSS within the same frequency bandwidth
+
+**CSI-SINR** stands for CSI signal-to-noise and interference ratio.It is defined as the linear average over the power contribution (in Watt) of the resource elements carrying CSI reference signals divided by the linear average of the noise and interference power contribution (in Watt) over the resource elements carrying CSI reference signals within the same frequency bandwidth

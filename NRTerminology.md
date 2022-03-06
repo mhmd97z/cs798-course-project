@@ -1,18 +1,62 @@
+### Useful links
+- https://www.techplayon.com/5g-nr-rrc-procedure-states/
+
+
 ### RRC 
 How both parties of UE and BS in the communication reach agreement on a common configuration. To do this, we need a special control mechanism to exchange informations on those configurations between communicating parties. The resulting implementation of this control mechanism is called RRC (Radio Resource Control). 
 
 Another central role of RRC within each communicating party (i.e, within UE and Network) is to work as a control center for all of the lower layers within each system. The collection of all the lower layers within UE or basestation is called 'Radio Resource' (i.e, resources required to make radio communication possible). The major role of RRC is to control(configure) all the Radio Resources (PHY, MAC, RLC, PDCP) to make it possible to communicate between UE and the base station (e.g, gNB, eNB, NB, BTS etc).
 
-There are three main states that the connection can have: 
+The major functions of the RRC protocol include:
+  - connection establishment and release functions
+    - Addition, modification, and release of carrier aggregation
+    - Addition, modification, and release of Dual Connectivity in NR or between E-UTRA and NR.
+  - broadcast of system information
+  - radio bearer establishment
+  - reconfiguration and release
+  - RRC connection mobility procedures
+    - Handover and context transfer
+    - UE cell selection and reselection and control of cell selection and reselection
+    - Inter-RAT mobility
+  - paging notification and release and outer loop power control
+
+The operation of the RRC is guided by a state machine which defines certain specific states that a UE may be present in. The different RRC states in this state machine have different amounts of radio resources associated with them and these are the resources that the UE may use when it is present in a given specific state. There are three main states that the connection can have: 
   - connected
   - inactive (added in NR)
   - idle
+When UE is power up it is in Disconnected mode/Idle mode, It can move  RRC connected with initial attach or with connection establishment. If there is no activity from UE for a short time, It can suspend its session by moving to RRC Inactive and can resume its session moving to RRC connected mode.
+
+RRC Idle Mode Operations:
+- PLMN selection
+- Broadcast of system information
+- Cell re-selection mobility
+- Paging for mobile terminated data is initiated by 5GC
+- Paging for mobile terminated data area is managed by 5GC
+- DRX for CN paging configured by NAS
+RRC Inactive Mode Operation:
+- Broadcast of system information
+- Cell re-selection mobility
+- Paging is initiated by NG-RAN (RAN paging)
+- RAN-based notification area (RNA) is managed by NG- RAN
+- DRX for RAN paging configured by NG-RAN
+- 5GC – NG-RAN connection (both C/U-planes) is established for UE
+- The UE AS context is stored in NG-RAN and the UE
+- NG-RAN knows the RNA which the UE belongs to
+RRC Connected Mode Operation:
+- 5GC – NG-RAN connection (both C/U-planes) is established for UE
+- The UE AS context is stored in NG-RAN and the UE
+- NG-RAN knows the cell which the UE belongs to
+- Transfer of unicast data to/from the UE
+- Network controlled mobility including measurements
+
+
 
 - RRC.Conn.{Avg & Max}
 - RRC.ConnEstabAtt.Sum
 - RRC.ConnEstabSucc.Sum
 - RRC.ConnReEstabAtt.{HOFail & Other & Sum & reconfigFail}
 - RrcState -> CONNECTED, IDLE
+
 
 **RRC Reconfiguration** is the most important steps in establishing Radio Connection between UE and Network. Connection reconfiguration is triggered by LTE or NR, and then the ue will send a connection reconfiguration complete message in response. After which, there will be an established connection. Needless to say, there's some initial configuration in the beginning [RRC Setup], and then you reconfigure that!
 
@@ -49,8 +93,8 @@ Each LTE cell has two identifiers, with different purposes – the Global Cell I
 However, an UE, which is any device used directly by an end-user to communicate, cannot distinguish between two cells if both have the same PCI and frequency bands; this phenomenon is called a PCI conflict. PCI conflicts can be divided into two situations – PCI confusions and PCI collisions.
 
 A PCI confusion occurs whenever a E-UTRAN cell has two different neighbor E-UTRAN cells with equal PCI and frequency.
-A PCI collision happens whenever a E-UTRAN cell has a neighbor E-UTRAN cell with identical PCI and frequency.
 
+A PCI collision happens whenever a E-UTRAN cell has a neighbor E-UTRAN cell with identical PCI and frequency.
 
 
 
