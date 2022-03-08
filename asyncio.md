@@ -126,7 +126,7 @@ async def g():
 
 - A function that you introduce with _async def_ is a **coroutine**. It may use await, return, or yield, but all of these are optional. Using await and/or return creates a coroutine function. To call a coroutine function, you must await it to get its results.
 - Just like it’s a SyntaxError to use yield outside of a def function, it is a SyntaxError to use await outside of an async def coroutine. You can only use await in the body of coroutines.
-``` Python
+``` Python 
 async def f(x):
     y = await z(x)  # OK - `await` and `return` allowed in coroutines
     return y

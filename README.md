@@ -26,12 +26,16 @@
 - [ ] * How PRBs are being allocated accross slices?
 - [ ] * How to simulate a scenario comprising of sending traffic 
   - [ ] * What about the core? Do we need?
+- [ ] * Watching sd-ran community sessions!
+  - [ ] * 
+  - [ ] * 
 - [ ] * Investigating python sdk
 - [ ] + Overhead  of collecting CQI values: 
   - [ ] + How often it's changing 
   - [ ] + Actual data Vs headers 
 - [ ] + VNFs
 - [ ] + Non-real-time RIC. How would that be compatible with this setup?
+
 
 ## Steps to Deploy SD-RAN Components using Kubernetes
 - Setting up Kubernetes
