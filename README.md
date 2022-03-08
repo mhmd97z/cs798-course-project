@@ -35,6 +35,9 @@
   - [ ] + Actual data Vs headers 
 - [ ] + VNFs
 - [ ] + Non-real-time RIC. How would that be compatible with this setup?
+- [ ] OAI 5G NR RF simulator (RAN+CORE) deployment , can we use it with sdran RIC ?
+- [ ] Decide on what to use as RF (USRP/RF-simulator)
+- [ ] Explore RIC Agent deployment with OAI CU/DU.
 
 
 ## Steps to Deploy SD-RAN Components using Kubernetes
