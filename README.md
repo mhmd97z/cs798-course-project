@@ -35,6 +35,9 @@
   - [ ] + Actual data Vs headers 
 - [ ] + VNFs
 - [ ] + Non-real-time RIC. How would that be compatible with this setup?
+- [ ] OAI 5G NR RF simulator (RAN+CORE) deployment , can we use it with sdran RIC ?
+- [ ] Decide on what to use as RF (USRP/RF-simulator)
+- [ ] Explore RIC Agent deployment with OAI CU/DU.
 
 
 ## Steps to Deploy SD-RAN Components using Kubernetes
@@ -186,7 +189,8 @@ onos mlb set parameters --interval 20 # to change mlb parameters
 ### Useful links!
 - [General Instructions](https://docs.onosproject.org/onos-cli/docs/cli/onos/) 
 - [SD-RAN Documentation](https://docs.sd-ran.org/master/index.html)
-
+- [RIC Agent deployment with OAI CU DU](https://github.com/onosproject/openairinterface5g)
+- [OAI 5G RF simulator deployment (RAN and CORE) tutorial](https://gitlab.flux.utah.edu/powder-mirror/openairinterface5g/-/tree/de8d4f431821f865672e17fcb3c0176eb5775907/ci-scripts/yaml_files/5g_rfsimulator)
 
 ### Timeline
 - Deploy a testbed based on open-source solutions offered by ONF, we will be using their SD-RANsimulator to implement the different RAN data plane components and theμonos nRT-RIC asthe control plane -> 
