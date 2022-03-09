@@ -45,3 +45,11 @@
         - other slices' UEs may schedule into unused RBs
       - round-robin across subframes:
         - if slice a has twice priority for slice b, then they assig twice number of subframes to it
+
+## 2021-09-16
+[Link](https://drive.google.com/drive/folders/17lbHGrvP8mvnMJ-WS1FgAA82pRwl9hRN)
+- Details of the procedures in RSM service model!
+
+## 2021-09-02
+- scheduling and slicing detail! 
+- must watch!
