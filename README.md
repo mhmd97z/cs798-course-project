@@ -46,8 +46,8 @@
   - Setting up the cluster using this [link](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)
     - ``kubeadm init --apiserver-advertise-address=<MASTER IP ADDR>``
     - this will give you a token that worker nodes need to use for authentication
-    - Just need to run this on the worker nodes:``kubeadm join 10.10.0.213:6443 --token 1ms8en.e7odz1p9wk6xupb1	--discovery-token-ca-cert-hash sha256:051d68ecbe193de503614fc6402c872daabc1cd1131dcdd7496349f7036972dc``
-    - it will print some commands needs to be run as well!
+    - Just need to run this on the worker nodes:``kubeadm join 10.10.0.213:6443 --token hfg1pb.lqsnx01j0fsjofpf        --discovery-token-ca-cert-hash sha256:29ec3762f3864a6a517e712888cbdb9afae8ec20083adfe6f4b2ae15f73284cf``
+    - it will print some commands needs to berun as well!
   - Moving on, you need to enable networking add-on. Here I chose to use weavenet:
     - ``kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"``
   - If you want to reinit the cluster, do what follows:
