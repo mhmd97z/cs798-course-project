@@ -1,6 +1,42 @@
 ## 2022-02-17
 ORAN E2 Interface Integration
 Between Sercomm gNodeB and ONF Near-RT RIC 
+[Slides](https://docs.google.com/presentation/d/14QSXzAh3_mQHQtv67yka5-UOanNBmrKA_a4ImGQ-_ck/edit#slide=id.gb78c612887_0_0)
+
+**Release 1.4**
+- What's new in the platform
+  - (A1t): Policy management interface with non-RT RIC, implementing A1. It's just like onos-e2t supporting 2t nodes
+  - Automated Coversion Tool: Converts ASN <-> Protobuf
+    - Go APER library => upgraded: not only to connvert service models but also E2-AP
+  - onos-config: adding the capability of handling configuration of O1 interface
+    - FCAPS interface
+    - handles things more than configuration
+- What's new in use cases
+  - Traffic steering app from RIMEDO lab
+    - it receives information from non-rt ric, and makes changes in the ran node
+  - Intel connectivity management xApp
+  - The relation between UseCase, xApps, service Model, and the undelying hardware can be found on their slides!
+- What's new in intfa
+  - 5G nodes now support Sercomm alongside Radisys!
+
+**RIMEDO lab traffic steering xApp**
+
+
+**A1t**
+- onos-a1t is the a1 termination point in uONOS
+- a proxy of a1 interface messages
+  - encode/decode a1 messages
+  - forward messages between non-RT RIC (north-bound using rest API) and xApps (south-bound using gRPC)
+- a1 supported services [implementation state]
+  - policy mngmnt [implenented]
+  - a1 enrichment information [NBI -> done, SBI -> partially done, A1-E1 schema => not yet]
+  - AI/ML model mngmnt [not yet]
+
+
+**RAN UL & DL Slicing**
+- enabling Ul slicing 
+  - its featues is pretty much the same as DL slicing 
+
 
 
 ## 2022-02-03

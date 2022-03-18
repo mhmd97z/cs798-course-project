@@ -14,27 +14,25 @@
   - [x] model.yaml file detail 
     - [ ] pitch between cells
     - [x] max-collisions 
-    - [ ] earfcn 
+    - [x] earfcn 
     - [ ] deform 
-    - [ ] measurement params: timetotrigger, frequencyoffset, pcellindividualoffset, pcellindividualoffset, ncellindividualoffsets, hysteresis, eventa3params [a3offset, reportonleave] 
+    - [x] measurement params: timetotrigger, frequencyoffset, pcellindividualoffset, pcellindividualoffset, ncellindividualoffsets, hysteresis, eventa3params [a3offset, reportonleave] 
 - [ ] Investigating RAN simulator gRPC APIs and onos cli 
   - [x] Protobuf structure 
   - [ ] provided gRPC
 - [x] Read about NR Terminology
   - [x] onos components 
   - [x] Investigating RRC protocol to understand what are the provided KPIs 
-- [ ] * How PRBs are being allocated accross slices?
-- [ ] * How to simulate a scenario comprising of sending traffic 
-  - [ ] * What about the core? Do we need?
-- [ ] * Watching sd-ran community sessions!
-  - [ ] * 
-  - [ ] * 
+- [x] * How PRBs are being allocated accross slices?
+- [x] * How to simulate a scenario comprising of sending traffic 
+  - [x] * What about the core? Do we need?
+- [x] * Watching sd-ran community sessions!
 - [ ] * Investigating python sdk
 - [ ] + Overhead  of collecting CQI values: 
   - [ ] + How often it's changing 
-  - [ ] + Actual data Vs headers 
+  - [ ] + Actual data Vs headers
 - [ ] + VNFs
-- [ ] + Non-real-time RIC. How would that be compatible with this setup?
+- [x] + Non-real-time RIC. How would that be compatible with this setup?
 - [ ] OAI 5G NR RF simulator (RAN+CORE) deployment , can we use it with sdran RIC ?
 - [ ] Decide on what to use as RF (USRP/RF-simulator)
 - [ ] Explore RIC Agent deployment with OAI CU/DU.
