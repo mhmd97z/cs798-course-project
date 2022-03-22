@@ -119,7 +119,7 @@ class E2Client:
         actions: List[Action],
     ) -> AsyncIterator[Tuple[bytes, bytes]]:
         """Establish an E2 subscription.
-
+    
         Args:
             e2_node_id: The target E2 node ID.
             service_model_name: The service model name.

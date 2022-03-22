@@ -1,8 +1,7 @@
 # fb-kpimon-xapp
 key performance indicator app
 
-This app subscribes to the kpm (key performance metrics) service model and exposes
-the metrics via a prometheus gauge endpoint.
+This app subscribes to the kpm (key performance metrics) service model and exposes the metrics via a prometheus gauge endpoint.
 
 ## Build image
 

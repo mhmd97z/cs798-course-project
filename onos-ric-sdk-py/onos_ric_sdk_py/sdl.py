@@ -225,7 +225,7 @@ class SDLClient:
 
         try:
             async for response in client.watch(filters=filters):
-                event = response.event
+                event = response.event 
                 if event.type in (EventType.ADDED, EventType.NONE):
                     e2_node_id = event.object.relation.tgt_entity_id
                     get_response = await client.get(id=e2_node_id)
