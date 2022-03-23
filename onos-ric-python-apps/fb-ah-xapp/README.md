@@ -145,3 +145,55 @@ python3 main.py \
     --pci-maintenance-delay 30 \
     --pci-maintenance-period 300
 ```
+
+## Developed methods
+- subscribe_e2()
+  - load previously saved cell information state from topo (sdl_client)
+    - get cells from the given e2 node and and the data from each cell
+    - data: E2SmRcPreIndicationHeader, E2SmRcPreIndicationMessage, location (lat, lng) [saved in cells_tracker], coverage (azimuth, arc_width, tilt, height) [saved in cells_tracker]
+      - process_indication 
+  - subscribe to the rc-pre service model (e2_client.subscribe)
+    - two possible triggers: UPON_CHANGE or PERIODIC
+    - Action: ACTION_TYPE_REPORT, 
+    - it will retrun ind_header and ind_message
+    - process_indication 
+  - save cell information (from the subscription) state into topo to be used if app restarts
+
+- subscribe_pci_changes()
+  - Subscribe to changes of pci due to conflicts proposed by eson_client | Changes are triggered when a Register or Add/Remove neighbor event occurs
+  - loops over change_request in **eson_client.pci_subscribe()**
+    - update_pci() and then eson_client.pci_confirm_change()
+- monitor_proposed_changes()
+  - query changes to pci via **eson_client.pci_get_proposed_changes()**
+  - loops over changes
+    - update_pci() and then pci_confirm_change()
+- update_pci()
+  - it sends RcPre SM control messages with the rc command of RC_PRE_COMMAND_SET_PARAMETERS
+  - it uses e2 client functions: e2_client.control()
+- process_indication()
+  - cells_tracker.update -> returns a dict with all the information regarding the cells
+  - eson_client.register
+    - notes down the information of cells from the given iformation
+
+- update_eson_capacity()
+  - update capacity (MLB)
+  - it monitors kpis or each sell to report capacity to the eSON server
+    - eson_client.mlb_report_capacity()
+- subscribe_mlb_changes()
+  - Subscribe to changes for MLB
+  - it calls eson_client.mlb_subscribe() to listen to the changes
+    - update_mlb_cio() and then mlb_confirm_change()
+- update_mlb_cio()
+  - Update cell individual offset
+  - it sends RcPre SM control messages with the rc command of RC_PRE_COMMAND_SET_PARAMETERS
+  - it uses e2 client functions: e2_client.control()
+
+
+
+- track_kpi()
+  - subscribe to kpi e2 messages (for each e2 connection)
+- airhop_pci.cells_tracker
+  - CellChanges, 
+  - CellsTracker, 
+  - CellsState, 
+  - cgiFromNcgi 
