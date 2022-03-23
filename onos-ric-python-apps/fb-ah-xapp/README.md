@@ -6,8 +6,6 @@ monitor and control RANs via RIC platforms using a RIC SDK.
 This app is an adapter to Airhop's eSON service, covering physical cell identifier
 (PCI) confict resolution, and mobility load balancing (MLB).
 
-This app uses the ONF Python SDK.
-
 ## Functionality
 
 An E2 subscription to the rc-pre service model is made. Cell information such as PCI

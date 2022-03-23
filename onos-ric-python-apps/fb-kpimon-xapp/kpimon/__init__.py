@@ -74,7 +74,7 @@ async def subscribe(
         sub_map[idx + 1] = cell.cell_global_id.value
         action_def = E2SmKpmActionDefinition(
             ric_style_type=RicStyleType(value=report_style.type),
-        )
+        ) 
         action_def.action_definition_formats.action_definition_format1=E2SmKpmActionDefinitionFormat1(
             cell_obj_id=CellObjectId(value=cell.cell_object_id),
             meas_info_list=meas_info_list,
