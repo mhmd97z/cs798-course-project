@@ -177,4 +177,32 @@ A1 Termination component
 ## 2021-07-01
 Radisys! 
 
+[Slides](https://drive.google.com/drive/folders/10kDFYO7s30EHcPt31WAhvBGki9yHOI-S)
+
+## 2021-06-03
+Radisys! 
+
 [Slides](https://drive.google.com/drive/folders/1LKuTisU08B0ByVhCQo9DDS_ygbjNj_ha)
+
+
+## 2021-05-20
+Intel: Connection Management xAPP | 
+[Material](https://drive.google.com/drive/folders/1pRwuALY6ctuyXk8LAPP18P4O2nTOX3B6)
+
+
+## 2021-05-06
+SD-RAN Trial @ DT | 
+[Material](https://drive.google.com/drive/folders/1KRAk4vka621WOI17Y-J66UCvJU17v8x7)
+
+## 2021-04-15
+RANSim in SD-RAN 1.1
+
+## 2021-03-18
+Facebook-Airhop eSON xApp: basics and details
+
+## 2021-03-04
+Airhop eSON theory
+
+## 2021-02-18
+A1 and O1 interfaces - deep dive into non-RT RIC - ONAP
+
